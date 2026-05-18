@@ -1,4 +1,4 @@
-# TER Master 1 DataScale - métadonnées dans un lac de données
+# TER Master 1 TER - Métadonnées dans un lac de données
 
 Ce dépôt contient notre travail de TER sur la gestion des métadonnées dans un lac de données.
 
