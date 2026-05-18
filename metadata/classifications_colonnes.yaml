@@ -1,0 +1,320 @@
+clients:
+  id_client:
+    data_type: integer
+    description: Identifiant unique du client.
+    classifications:
+    - CLE_PRIMAIRE
+    is_sensitive: false
+    rgpd_relevant: false
+  nom:
+    data_type: string
+    description: Nom fictif du client.
+    classifications:
+    - DONNEE_PERSONNELLE
+    - DONNEE_SENSIBLE_RGPD
+    is_sensitive: true
+    rgpd_relevant: true
+  prenom:
+    data_type: string
+    description: Prenom fictif du client.
+    classifications:
+    - DONNEE_PERSONNELLE
+    - DONNEE_SENSIBLE_RGPD
+    is_sensitive: true
+    rgpd_relevant: true
+  email:
+    data_type: string
+    description: Adresse email fictive du client.
+    classifications:
+    - DONNEE_PERSONNELLE
+    - EMAIL
+    - DONNEE_SENSIBLE_RGPD
+    is_sensitive: true
+    rgpd_relevant: true
+  telephone:
+    data_type: string
+    description: Numero de telephone fictif du client.
+    classifications:
+    - DONNEE_PERSONNELLE
+    - TELEPHONE
+    - DONNEE_SENSIBLE_RGPD
+    is_sensitive: true
+    rgpd_relevant: true
+  pays:
+    data_type: string
+    description: Pays declare pour le client.
+    classifications:
+    - DONNEE_PERSONNELLE
+    is_sensitive: true
+    rgpd_relevant: true
+  ville:
+    data_type: string
+    description: Ville declaree pour le client.
+    classifications:
+    - DONNEE_PERSONNELLE
+    is_sensitive: true
+    rgpd_relevant: true
+  date_inscription:
+    data_type: date
+    description: Date d'inscription du client.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+  segment_client:
+    data_type: string
+    description: Segment marketing du client.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+  consentement_marketing:
+    data_type: boolean
+    description: Consentement marketing donne par le client.
+    classifications:
+    - DONNEE_PERSONNELLE
+    is_sensitive: true
+    rgpd_relevant: true
+produits:
+  id_produit:
+    data_type: integer
+    description: Identifiant unique du produit.
+    classifications:
+    - CLE_PRIMAIRE
+    is_sensitive: false
+    rgpd_relevant: false
+  nom_produit:
+    data_type: string
+    description: Nom fictif du produit.
+    classifications:
+    - NON_SENSIBLE
+    is_sensitive: false
+    rgpd_relevant: false
+  categorie:
+    data_type: string
+    description: Categorie commerciale du produit.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+  prix:
+    data_type: decimal
+    description: Prix catalogue du produit.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+  stock:
+    data_type: integer
+    description: Quantite disponible en stock.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+  fournisseur:
+    data_type: string
+    description: Fournisseur fictif du produit.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+  date_ajout_catalogue:
+    data_type: date
+    description: Date d'ajout au catalogue.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+commandes:
+  id_commande:
+    data_type: integer
+    description: Identifiant unique de commande.
+    classifications:
+    - CLE_PRIMAIRE
+    is_sensitive: false
+    rgpd_relevant: false
+  id_client:
+    data_type: integer
+    description: Reference vers le client ayant passe la commande.
+    classifications:
+    - CLE_ETRANGERE
+    - DONNEE_PERSONNELLE
+    is_sensitive: true
+    rgpd_relevant: true
+  date_commande:
+    data_type: date
+    description: Date de creation de la commande.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+  statut:
+    data_type: string
+    description: Statut metier de la commande.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+  montant_total:
+    data_type: decimal
+    description: Montant total de la commande.
+    classifications:
+    - DONNEE_FINANCIERE
+    - DONNEE_COMMERCIALE
+    is_sensitive: true
+    rgpd_relevant: false
+  canal_vente:
+    data_type: string
+    description: Canal par lequel la commande a ete effectuee.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+  pays_livraison:
+    data_type: string
+    description: Pays de livraison de la commande.
+    classifications:
+    - DONNEE_PERSONNELLE
+    is_sensitive: true
+    rgpd_relevant: true
+paiements:
+  id_paiement:
+    data_type: integer
+    description: Identifiant unique du paiement.
+    classifications:
+    - CLE_PRIMAIRE
+    is_sensitive: false
+    rgpd_relevant: false
+  id_commande:
+    data_type: integer
+    description: Reference vers la commande payee.
+    classifications:
+    - CLE_ETRANGERE
+    is_sensitive: false
+    rgpd_relevant: false
+  mode_paiement:
+    data_type: string
+    description: Mode de paiement sans identifiant bancaire.
+    classifications:
+    - DONNEE_FINANCIERE
+    is_sensitive: true
+    rgpd_relevant: false
+  montant:
+    data_type: decimal
+    description: Montant paye correspondant au total de commande.
+    classifications:
+    - DONNEE_FINANCIERE
+    is_sensitive: true
+    rgpd_relevant: false
+  statut_paiement:
+    data_type: string
+    description: Statut du paiement.
+    classifications:
+    - DONNEE_FINANCIERE
+    is_sensitive: true
+    rgpd_relevant: false
+  date_paiement:
+    data_type: date
+    description: Date fictive du paiement.
+    classifications:
+    - DONNEE_FINANCIERE
+    is_sensitive: true
+    rgpd_relevant: false
+avis_clients:
+  id_avis:
+    data_type: integer
+    description: Identifiant unique de l'avis.
+    classifications:
+    - CLE_PRIMAIRE
+    is_sensitive: false
+    rgpd_relevant: false
+  id_client:
+    data_type: integer
+    description: Reference vers le client auteur de l'avis.
+    classifications:
+    - CLE_ETRANGERE
+    - DONNEE_PERSONNELLE
+    is_sensitive: true
+    rgpd_relevant: true
+  id_produit:
+    data_type: integer
+    description: Reference vers le produit evalue.
+    classifications:
+    - CLE_ETRANGERE
+    is_sensitive: false
+    rgpd_relevant: false
+  note:
+    data_type: integer
+    description: Note client comprise entre 1 et 5.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+  commentaire:
+    data_type: string
+    description: Commentaire libre fictif du client.
+    classifications:
+    - TEXTE_LIBRE
+    - RISQUE_DONNEE_PERSONNELLE
+    is_sensitive: true
+    rgpd_relevant: true
+  date_avis:
+    data_type: date
+    description: Date de publication de l'avis.
+    classifications:
+    - DONNEE_COMMERCIALE
+    is_sensitive: false
+    rgpd_relevant: false
+tickets_support:
+  id_ticket:
+    data_type: integer
+    description: Identifiant unique du ticket support.
+    classifications:
+    - CLE_PRIMAIRE
+    is_sensitive: false
+    rgpd_relevant: false
+  id_client:
+    data_type: integer
+    description: Reference vers le client ayant ouvert le ticket.
+    classifications:
+    - CLE_ETRANGERE
+    - DONNEE_PERSONNELLE
+    is_sensitive: true
+    rgpd_relevant: true
+  sujet:
+    data_type: string
+    description: Sujet court du ticket support.
+    classifications:
+    - TEXTE_LIBRE
+    - RISQUE_DONNEE_PERSONNELLE
+    is_sensitive: true
+    rgpd_relevant: true
+  message:
+    data_type: string
+    description: Message long fictif saisi dans le ticket.
+    classifications:
+    - TEXTE_LIBRE
+    - RISQUE_DONNEE_PERSONNELLE
+    is_sensitive: true
+    rgpd_relevant: true
+  priorite:
+    data_type: string
+    description: Priorite operationnelle du ticket.
+    classifications:
+    - NON_SENSIBLE
+    is_sensitive: false
+    rgpd_relevant: false
+  statut:
+    data_type: string
+    description: Statut de traitement du ticket.
+    classifications:
+    - NON_SENSIBLE
+    is_sensitive: false
+    rgpd_relevant: false
+  date_creation:
+    data_type: date
+    description: Date de creation du ticket.
+    classifications:
+    - NON_SENSIBLE
+    is_sensitive: false
+    rgpd_relevant: false

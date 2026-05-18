@@ -1,0 +1,240 @@
+[
+  {
+    "nom_table": "avis_clients",
+    "chemin_fichier": "data/structured/avis_clients.parquet",
+    "format": "parquet",
+    "nombre_lignes": 1200,
+    "nombre_colonnes": 6,
+    "colonnes": [
+      {
+        "nom": "id_avis",
+        "type": "int64"
+      },
+      {
+        "nom": "id_client",
+        "type": "int64"
+      },
+      {
+        "nom": "id_produit",
+        "type": "int64"
+      },
+      {
+        "nom": "note",
+        "type": "int64"
+      },
+      {
+        "nom": "commentaire",
+        "type": "str"
+      },
+      {
+        "nom": "date_avis",
+        "type": "str"
+      }
+    ],
+    "taille_fichier_octets": 89809,
+    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+  },
+  {
+    "nom_table": "clients",
+    "chemin_fichier": "data/structured/clients.parquet",
+    "format": "parquet",
+    "nombre_lignes": 1000,
+    "nombre_colonnes": 10,
+    "colonnes": [
+      {
+        "nom": "id_client",
+        "type": "int64"
+      },
+      {
+        "nom": "nom",
+        "type": "str"
+      },
+      {
+        "nom": "prenom",
+        "type": "str"
+      },
+      {
+        "nom": "email",
+        "type": "str"
+      },
+      {
+        "nom": "telephone",
+        "type": "str"
+      },
+      {
+        "nom": "pays",
+        "type": "str"
+      },
+      {
+        "nom": "ville",
+        "type": "str"
+      },
+      {
+        "nom": "date_inscription",
+        "type": "str"
+      },
+      {
+        "nom": "segment_client",
+        "type": "str"
+      },
+      {
+        "nom": "consentement_marketing",
+        "type": "bool"
+      }
+    ],
+    "taille_fichier_octets": 59531,
+    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+  },
+  {
+    "nom_table": "commandes",
+    "chemin_fichier": "data/structured/commandes.parquet",
+    "format": "parquet",
+    "nombre_lignes": 3000,
+    "nombre_colonnes": 7,
+    "colonnes": [
+      {
+        "nom": "id_commande",
+        "type": "int64"
+      },
+      {
+        "nom": "id_client",
+        "type": "int64"
+      },
+      {
+        "nom": "date_commande",
+        "type": "str"
+      },
+      {
+        "nom": "statut",
+        "type": "str"
+      },
+      {
+        "nom": "montant_total",
+        "type": "float64"
+      },
+      {
+        "nom": "canal_vente",
+        "type": "str"
+      },
+      {
+        "nom": "pays_livraison",
+        "type": "str"
+      }
+    ],
+    "taille_fichier_octets": 65041,
+    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+  },
+  {
+    "nom_table": "paiements",
+    "chemin_fichier": "data/structured/paiements.parquet",
+    "format": "parquet",
+    "nombre_lignes": 3000,
+    "nombre_colonnes": 6,
+    "colonnes": [
+      {
+        "nom": "id_paiement",
+        "type": "int64"
+      },
+      {
+        "nom": "id_commande",
+        "type": "int64"
+      },
+      {
+        "nom": "mode_paiement",
+        "type": "str"
+      },
+      {
+        "nom": "montant",
+        "type": "float64"
+      },
+      {
+        "nom": "statut_paiement",
+        "type": "str"
+      },
+      {
+        "nom": "date_paiement",
+        "type": "str"
+      }
+    ],
+    "taille_fichier_octets": 67306,
+    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+  },
+  {
+    "nom_table": "produits",
+    "chemin_fichier": "data/structured/produits.parquet",
+    "format": "parquet",
+    "nombre_lignes": 200,
+    "nombre_colonnes": 7,
+    "colonnes": [
+      {
+        "nom": "id_produit",
+        "type": "int64"
+      },
+      {
+        "nom": "nom_produit",
+        "type": "str"
+      },
+      {
+        "nom": "categorie",
+        "type": "str"
+      },
+      {
+        "nom": "prix",
+        "type": "float64"
+      },
+      {
+        "nom": "stock",
+        "type": "int64"
+      },
+      {
+        "nom": "fournisseur",
+        "type": "str"
+      },
+      {
+        "nom": "date_ajout_catalogue",
+        "type": "str"
+      }
+    ],
+    "taille_fichier_octets": 13948,
+    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+  },
+  {
+    "nom_table": "tickets_support",
+    "chemin_fichier": "data/structured/tickets_support.parquet",
+    "format": "parquet",
+    "nombre_lignes": 500,
+    "nombre_colonnes": 7,
+    "colonnes": [
+      {
+        "nom": "id_ticket",
+        "type": "int64"
+      },
+      {
+        "nom": "id_client",
+        "type": "int64"
+      },
+      {
+        "nom": "sujet",
+        "type": "str"
+      },
+      {
+        "nom": "message",
+        "type": "str"
+      },
+      {
+        "nom": "priorite",
+        "type": "str"
+      },
+      {
+        "nom": "statut",
+        "type": "str"
+      },
+      {
+        "nom": "date_creation",
+        "type": "str"
+      }
+    ],
+    "taille_fichier_octets": 49201,
+    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+  }
+]

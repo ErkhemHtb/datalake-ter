@@ -1,0 +1,92 @@
+clients:
+  name: clients
+  description: Informations principales des clients inscrits sur la plateforme e-commerce.
+  domain: CRM
+  owner: equipe_data
+  source_format: csv
+  target_format: parquet
+  sensitivity_level: high
+  quality_status: basic_checks_passed
+  expected_number_of_rows: 1000
+  primary_key: id_client
+  foreign_keys: []
+  business_use: Analyse client, segmentation, conformite RGPD et gouvernance du consentement.
+produits:
+  name: produits
+  description: Catalogue fictif des produits vendus par la plateforme.
+  domain: catalogue
+  owner: equipe_catalogue
+  source_format: csv
+  target_format: parquet
+  sensitivity_level: low
+  quality_status: basic_checks_passed
+  expected_number_of_rows: 200
+  primary_key: id_produit
+  foreign_keys: []
+  business_use: Analyse de catalogue, suivi des prix, stock et fournisseurs.
+commandes:
+  name: commandes
+  description: Commandes passees par les clients sur les differents canaux de vente.
+  domain: vente
+  owner: equipe_data
+  source_format: csv
+  target_format: parquet
+  sensitivity_level: medium
+  quality_status: basic_checks_passed
+  expected_number_of_rows: 3000
+  primary_key: id_commande
+  foreign_keys:
+  - column: id_client
+    references: clients.id_client
+  business_use: Analyse des ventes, parcours client, relations metier et lignage entre
+    CRM et ventes.
+paiements:
+  name: paiements
+  description: Paiements fictifs associes aux commandes, sans donnees bancaires exploitables.
+  domain: finance
+  owner: equipe_finance
+  source_format: csv
+  target_format: parquet
+  sensitivity_level: high
+  quality_status: basic_checks_passed
+  expected_number_of_rows: 3000
+  primary_key: id_paiement
+  foreign_keys:
+  - column: id_commande
+    references: commandes.id_commande
+  business_use: Suivi financier, rapprochement commande-paiement et classification
+    des donnees financieres.
+avis_clients:
+  name: avis_clients
+  description: Avis fictifs de clients sur des produits du catalogue.
+  domain: experience_client
+  owner: equipe_experience_client
+  source_format: csv
+  target_format: parquet
+  sensitivity_level: medium
+  quality_status: basic_checks_passed
+  expected_number_of_rows: 1200
+  primary_key: id_avis
+  foreign_keys:
+  - column: id_client
+    references: clients.id_client
+  - column: id_produit
+    references: produits.id_produit
+  business_use: Analyse de satisfaction, recherche textuelle et demonstration du risque
+    sur champs libres.
+tickets_support:
+  name: tickets_support
+  description: Tickets de support fictifs crees par les clients.
+  domain: support
+  owner: equipe_support
+  source_format: csv
+  target_format: parquet
+  sensitivity_level: medium
+  quality_status: basic_checks_passed
+  expected_number_of_rows: 500
+  primary_key: id_ticket
+  foreign_keys:
+  - column: id_client
+    references: clients.id_client
+  business_use: Analyse des incidents, priorisation support et gouvernance des messages
+    en texte libre.

@@ -1,0 +1,14 @@
+services:
+  atlas:
+    image: ${ATLAS_IMAGE:-sburn/apache-atlas:2.3.0}
+    container_name: ${ATLAS_CONTAINER_NAME:-atlas-ter}
+    ports:
+      - "${ATLAS_PORT:-21000}:21000"
+    volumes:
+      - atlas-data:/apache-atlas/data
+      - atlas-logs:/apache-atlas/logs
+    restart: unless-stopped
+
+volumes:
+  atlas-data:
+  atlas-logs:

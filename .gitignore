@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Generated data
+data/raw/*.csv
+data/structured/*.parquet
+data/iceberg/*
+!data/iceberg/.gitkeep
+
+# Local documentation
+docs/
+
+# Local configuration
+.env
+*.local
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
