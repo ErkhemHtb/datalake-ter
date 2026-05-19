@@ -32,7 +32,7 @@
       }
     ],
     "taille_fichier_octets": 89809,
-    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+    "date_extraction": "2026-05-19T16:15:26.828351+00:00"
   },
   {
     "nom_table": "clients",
@@ -83,7 +83,7 @@
       }
     ],
     "taille_fichier_octets": 59531,
-    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+    "date_extraction": "2026-05-19T16:15:26.828351+00:00"
   },
   {
     "nom_table": "commandes",
@@ -122,7 +122,7 @@
       }
     ],
     "taille_fichier_octets": 65041,
-    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+    "date_extraction": "2026-05-19T16:15:26.828351+00:00"
   },
   {
     "nom_table": "paiements",
@@ -157,7 +157,7 @@
       }
     ],
     "taille_fichier_octets": 67306,
-    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+    "date_extraction": "2026-05-19T16:15:26.828351+00:00"
   },
   {
     "nom_table": "produits",
@@ -196,7 +196,7 @@
       }
     ],
     "taille_fichier_octets": 13948,
-    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+    "date_extraction": "2026-05-19T16:15:26.828351+00:00"
   },
   {
     "nom_table": "tickets_support",
@@ -235,6 +235,6 @@
       }
     ],
     "taille_fichier_octets": 49201,
-    "date_extraction": "2026-05-18T22:00:15.142948+00:00"
+    "date_extraction": "2026-05-19T16:15:26.828351+00:00"
   }
 ]

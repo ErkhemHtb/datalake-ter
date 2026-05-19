@@ -25,3 +25,5 @@ docs/
 Thumbs.db
 .idea/
 .vscode/
+
+.metadata/

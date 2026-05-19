@@ -8,6 +8,8 @@ import pandas as pd
 import yaml
 from faker import Faker
 
+from inference.inférence_de_colonne import infer_column_metadata
+from inference.table_metadata_inference import infer_table_metadata
 
 SEED = 42
 REFERENCE_DATE = date(2026, 5, 16)
@@ -191,97 +193,94 @@ def generate_support_tickets(clients: pd.DataFrame) -> pd.DataFrame:
 
 
 def build_table_metadata() -> dict:
-    return {
-        "clients": {
-            "name": "clients",
-            "description": "Informations principales des clients inscrits sur la plateforme e-commerce.",
-            "domain": "CRM",
-            "owner": "equipe_data",
-            "source_format": "csv",
-            "target_format": "parquet",
-            "sensitivity_level": "high",
-            "quality_status": "basic_checks_passed",
+    tables = [
+        {
+            "table_name": "clients",
             "expected_number_of_rows": N_CLIENTS,
-            "primary_key": "id_client",
             "foreign_keys": [],
-            "business_use": "Analyse client, segmentation, conformite RGPD et gouvernance du consentement.",
         },
-        "produits": {
-            "name": "produits",
-            "description": "Catalogue fictif des produits vendus par la plateforme.",
-            "domain": "catalogue",
-            "owner": "equipe_catalogue",
-            "source_format": "csv",
-            "target_format": "parquet",
-            "sensitivity_level": "low",
-            "quality_status": "basic_checks_passed",
+        {
+            "table_name": "produits",
             "expected_number_of_rows": N_PRODUCTS,
-            "primary_key": "id_produit",
             "foreign_keys": [],
-            "business_use": "Analyse de catalogue, suivi des prix, stock et fournisseurs.",
         },
-        "commandes": {
-            "name": "commandes",
-            "description": "Commandes passees par les clients sur les differents canaux de vente.",
-            "domain": "vente",
-            "owner": "equipe_data",
-            "source_format": "csv",
-            "target_format": "parquet",
-            "sensitivity_level": "medium",
-            "quality_status": "basic_checks_passed",
+        {
+            "table_name": "commandes",
             "expected_number_of_rows": N_ORDERS,
-            "primary_key": "id_commande",
-            "foreign_keys": [{"column": "id_client", "references": "clients.id_client"}],
-            "business_use": "Analyse des ventes, parcours client, relations metier et lignage entre CRM et ventes.",
+            "foreign_keys": [
+                {"column": "id_client", "references": "clients.id_client"},
+            ],
         },
-        "paiements": {
-            "name": "paiements",
-            "description": "Paiements fictifs associes aux commandes, sans donnees bancaires exploitables.",
-            "domain": "finance",
-            "owner": "equipe_finance",
-            "source_format": "csv",
-            "target_format": "parquet",
-            "sensitivity_level": "high",
-            "quality_status": "basic_checks_passed",
+        {
+            "table_name": "paiements",
             "expected_number_of_rows": N_ORDERS,
-            "primary_key": "id_paiement",
-            "foreign_keys": [{"column": "id_commande", "references": "commandes.id_commande"}],
-            "business_use": "Suivi financier, rapprochement commande-paiement et classification des donnees financieres.",
+            "foreign_keys": [
+                {"column": "id_commande", "references": "commandes.id_commande"},
+            ],
         },
-        "avis_clients": {
-            "name": "avis_clients",
-            "description": "Avis fictifs de clients sur des produits du catalogue.",
-            "domain": "experience_client",
-            "owner": "equipe_experience_client",
-            "source_format": "csv",
-            "target_format": "parquet",
-            "sensitivity_level": "medium",
-            "quality_status": "basic_checks_passed",
+        {
+            "table_name": "avis_clients",
             "expected_number_of_rows": N_REVIEWS,
-            "primary_key": "id_avis",
             "foreign_keys": [
                 {"column": "id_client", "references": "clients.id_client"},
                 {"column": "id_produit", "references": "produits.id_produit"},
             ],
-            "business_use": "Analyse de satisfaction, recherche textuelle et demonstration du risque sur champs libres.",
         },
-        "tickets_support": {
-            "name": "tickets_support",
-            "description": "Tickets de support fictifs crees par les clients.",
-            "domain": "support",
-            "owner": "equipe_support",
-            "source_format": "csv",
-            "target_format": "parquet",
-            "sensitivity_level": "medium",
-            "quality_status": "basic_checks_passed",
+        {
+            "table_name": "tickets_support",
             "expected_number_of_rows": N_SUPPORT_TICKETS,
-            "primary_key": "id_ticket",
-            "foreign_keys": [{"column": "id_client", "references": "clients.id_client"}],
-            "business_use": "Analyse des incidents, priorisation support et gouvernance des messages en texte libre.",
+            "foreign_keys": [
+                {"column": "id_client", "references": "clients.id_client"},
+            ],
         },
+    ]
+
+    return {
+        entry["table_name"]: infer_table_metadata(
+            table_name=entry["table_name"],
+            expected_number_of_rows=entry["expected_number_of_rows"],
+            foreign_keys=entry["foreign_keys"],
+        )
+        for entry in tables
     }
 
 
+_TABLE_FK_COLUMNS: dict[str, set[str]] = {
+    "clients":        set(),
+    "produits":       set(),
+    "commandes":      {"id_client"},
+    "paiements":      {"id_commande"},
+    "avis_clients":   {"id_client", "id_produit"},
+    "tickets_support": {"id_client"},
+}
+
+_TABLE_COLUMNS: dict[str, list[str]] = {
+    "clients": [
+        "id_client", "nom", "prenom", "email", "telephone",
+        "pays", "ville", "date_inscription", "segment_client",
+        "consentement_marketing",
+    ],
+    "produits": [
+        "id_produit", "nom_produit", "categorie", "prix",
+        "stock", "fournisseur", "date_ajout_catalogue",
+    ],
+    "commandes": [
+        "id_commande", "id_client", "date_commande", "statut",
+        "montant_total", "canal_vente", "pays_livraison",
+    ],
+    "paiements": [
+        "id_paiement", "id_commande", "mode_paiement",
+        "montant", "statut_paiement", "date_paiement",
+    ],
+    "avis_clients": [
+        "id_avis", "id_client", "id_produit",
+        "note", "commentaire", "date_avis",
+    ],
+    "tickets_support": [
+        "id_ticket", "id_client", "sujet", "message",
+        "priorite", "statut", "date_creation",
+    ],
+}
 def column_meta(data_type: str, description: str, classifications: list[str], is_sensitive: bool, rgpd_relevant: bool) -> dict:
     return {
         "data_type": data_type,
@@ -293,65 +292,15 @@ def column_meta(data_type: str, description: str, classifications: list[str], is
 
 
 def build_column_classifications() -> dict:
-    return {
-        "clients": {
-            "id_client": column_meta("integer", "Identifiant unique du client.", ["CLE_PRIMAIRE"], False, False),
-            "nom": column_meta("string", "Nom fictif du client.", ["DONNEE_PERSONNELLE", "DONNEE_SENSIBLE_RGPD"], True, True),
-            "prenom": column_meta("string", "Prenom fictif du client.", ["DONNEE_PERSONNELLE", "DONNEE_SENSIBLE_RGPD"], True, True),
-            "email": column_meta("string", "Adresse email fictive du client.", ["DONNEE_PERSONNELLE", "EMAIL", "DONNEE_SENSIBLE_RGPD"], True, True),
-            "telephone": column_meta("string", "Numero de telephone fictif du client.", ["DONNEE_PERSONNELLE", "TELEPHONE", "DONNEE_SENSIBLE_RGPD"], True, True),
-            "pays": column_meta("string", "Pays declare pour le client.", ["DONNEE_PERSONNELLE"], True, True),
-            "ville": column_meta("string", "Ville declaree pour le client.", ["DONNEE_PERSONNELLE"], True, True),
-            "date_inscription": column_meta("date", "Date d'inscription du client.", ["DONNEE_COMMERCIALE"], False, False),
-            "segment_client": column_meta("string", "Segment marketing du client.", ["DONNEE_COMMERCIALE"], False, False),
-            "consentement_marketing": column_meta("boolean", "Consentement marketing donne par le client.", ["DONNEE_PERSONNELLE"], True, True),
-        },
-        "produits": {
-            "id_produit": column_meta("integer", "Identifiant unique du produit.", ["CLE_PRIMAIRE"], False, False),
-            "nom_produit": column_meta("string", "Nom fictif du produit.", ["NON_SENSIBLE"], False, False),
-            "categorie": column_meta("string", "Categorie commerciale du produit.", ["DONNEE_COMMERCIALE"], False, False),
-            "prix": column_meta("decimal", "Prix catalogue du produit.", ["DONNEE_COMMERCIALE"], False, False),
-            "stock": column_meta("integer", "Quantite disponible en stock.", ["DONNEE_COMMERCIALE"], False, False),
-            "fournisseur": column_meta("string", "Fournisseur fictif du produit.", ["DONNEE_COMMERCIALE"], False, False),
-            "date_ajout_catalogue": column_meta("date", "Date d'ajout au catalogue.", ["DONNEE_COMMERCIALE"], False, False),
-        },
-        "commandes": {
-            "id_commande": column_meta("integer", "Identifiant unique de commande.", ["CLE_PRIMAIRE"], False, False),
-            "id_client": column_meta("integer", "Reference vers le client ayant passe la commande.", ["CLE_ETRANGERE", "DONNEE_PERSONNELLE"], True, True),
-            "date_commande": column_meta("date", "Date de creation de la commande.", ["DONNEE_COMMERCIALE"], False, False),
-            "statut": column_meta("string", "Statut metier de la commande.", ["DONNEE_COMMERCIALE"], False, False),
-            "montant_total": column_meta("decimal", "Montant total de la commande.", ["DONNEE_FINANCIERE", "DONNEE_COMMERCIALE"], True, False),
-            "canal_vente": column_meta("string", "Canal par lequel la commande a ete effectuee.", ["DONNEE_COMMERCIALE"], False, False),
-            "pays_livraison": column_meta("string", "Pays de livraison de la commande.", ["DONNEE_PERSONNELLE"], True, True),
-        },
-        "paiements": {
-            "id_paiement": column_meta("integer", "Identifiant unique du paiement.", ["CLE_PRIMAIRE"], False, False),
-            "id_commande": column_meta("integer", "Reference vers la commande payee.", ["CLE_ETRANGERE"], False, False),
-            "mode_paiement": column_meta("string", "Mode de paiement sans identifiant bancaire.", ["DONNEE_FINANCIERE"], True, False),
-            "montant": column_meta("decimal", "Montant paye correspondant au total de commande.", ["DONNEE_FINANCIERE"], True, False),
-            "statut_paiement": column_meta("string", "Statut du paiement.", ["DONNEE_FINANCIERE"], True, False),
-            "date_paiement": column_meta("date", "Date fictive du paiement.", ["DONNEE_FINANCIERE"], True, False),
-        },
-        "avis_clients": {
-            "id_avis": column_meta("integer", "Identifiant unique de l'avis.", ["CLE_PRIMAIRE"], False, False),
-            "id_client": column_meta("integer", "Reference vers le client auteur de l'avis.", ["CLE_ETRANGERE", "DONNEE_PERSONNELLE"], True, True),
-            "id_produit": column_meta("integer", "Reference vers le produit evalue.", ["CLE_ETRANGERE"], False, False),
-            "note": column_meta("integer", "Note client comprise entre 1 et 5.", ["DONNEE_COMMERCIALE"], False, False),
-            "commentaire": column_meta("string", "Commentaire libre fictif du client.", ["TEXTE_LIBRE", "RISQUE_DONNEE_PERSONNELLE"], True, True),
-            "date_avis": column_meta("date", "Date de publication de l'avis.", ["DONNEE_COMMERCIALE"], False, False),
-        },
-        "tickets_support": {
-            "id_ticket": column_meta("integer", "Identifiant unique du ticket support.", ["CLE_PRIMAIRE"], False, False),
-            "id_client": column_meta("integer", "Reference vers le client ayant ouvert le ticket.", ["CLE_ETRANGERE", "DONNEE_PERSONNELLE"], True, True),
-            "sujet": column_meta("string", "Sujet court du ticket support.", ["TEXTE_LIBRE", "RISQUE_DONNEE_PERSONNELLE"], True, True),
-            "message": column_meta("string", "Message long fictif saisi dans le ticket.", ["TEXTE_LIBRE", "RISQUE_DONNEE_PERSONNELLE"], True, True),
-            "priorite": column_meta("string", "Priorite operationnelle du ticket.", ["NON_SENSIBLE"], False, False),
-            "statut": column_meta("string", "Statut de traitement du ticket.", ["NON_SENSIBLE"], False, False),
-            "date_creation": column_meta("date", "Date de creation du ticket.", ["NON_SENSIBLE"], False, False),
-        },
-    }
 
-
+    result: dict[str, dict[str, dict]] = {}
+    for table_name, columns in _TABLE_COLUMNS.items():
+        fk_columns = _TABLE_FK_COLUMNS.get(table_name, set())
+        result[table_name] = {
+            col: infer_column_metadata(col, is_fk=(col in fk_columns))
+            for col in columns
+        }
+    return result
 def write_metadata_files() -> None:
     table_metadata_path = METADATA_DIR / "metadonnees_tables.yaml"
     column_classifications_path = METADATA_DIR / "classifications_colonnes.yaml"
